@@ -1,0 +1,12 @@
+SPDX-License-Identifier: GPL-2.0
+
+The modifications and added code in this repository (the cfg80211 glue changes in
+wl-src/src/wl/sys/, build.sh, and patches/) are licensed under the GNU General Public
+License v2.0. See https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for the full text.
+
+The base broadcom-sta driver sources are (C) Broadcom Corporation under their original
+license terms. The binary blob wlc_hybrid.o_amd64 is Broadcom proprietary and is NOT
+included here; obtain it from the broadcom-sta 6.30.223.271 distribution. Any wl.ko
+provided in Releases embeds that proprietary blob and is subject to Broadcom's license.
+
+This is unofficial research/educational code. No warranty. Use on hardware you own.

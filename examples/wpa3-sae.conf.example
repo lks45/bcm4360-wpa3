@@ -1,0 +1,13 @@
+# WPA3-SAE (pure). The driver runs SAE + the 4-way in wpa_supplicant.
+ctrl_interface=/run/wpa_supplicant
+update_config=0
+country=US
+sae_pwe=2            # allow hunt-and-peck + Hash-to-Element
+network={
+	ssid="YOUR_SSID"
+	key_mgmt=SAE
+	sae_password="YOUR_PASSWORD"
+	ieee80211w=2     # PMF required (WPA3)
+	pairwise=CCMP
+	group=CCMP
+}
