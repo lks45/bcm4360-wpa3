@@ -1682,7 +1682,7 @@ wl_get_driver_info(struct net_device *dev, struct ethtool_drvinfo *info)
 #endif
 	bzero(info, sizeof(struct ethtool_drvinfo));
 	snprintf(info->driver, sizeof(info->driver), "wl%d", wl->pub->unit);
-	strncpy(info->version, EPI_VERSION_STR, sizeof(info->version));
+	strscpy(info->version, EPI_VERSION_STR, sizeof(info->version));
 	info->version[(sizeof(info->version))-1] = '\0';
 }
 
