@@ -2507,7 +2507,7 @@ wl_timer(
 ) {
 	wl_timer_t *t =
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)
-		from_timer(t, tl, timer);
+		timer_container_of(t, tl, timer);
 #else
 		(wl_timer_t *)data;
 #endif
@@ -2612,7 +2612,7 @@ wl_del_timer(wl_info_t *wl, wl_timer_t *t)
 	ASSERT(t);
 	if (t->set) {
 		t->set = FALSE;
-		if (!del_timer(&t->timer)) {
+		if (!timer_delete(&t->timer)) {
 #ifdef BCMDBG
 			WL_INFORM(("wl%d: Failed to delete timer %s\n", wl->unit, t->name));
 #endif
@@ -3171,7 +3171,7 @@ _wl_add_monitor_if(wl_task_t *task)
 	}
 
 	ASSERT(strlen(wlif->name) > 0);
-	strncpy(wlif->dev->name, wlif->name, strlen(wlif->name));
+	memcpy(wlif->dev->name, wlif->name, strlen(wlif->name));
 
 	wl->monitor_dev = dev;
 	if (wl->monitor_type == 1)
