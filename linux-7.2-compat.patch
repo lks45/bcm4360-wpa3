@@ -1,0 +1,26 @@
+--- a/src/wl/sys/wl_linux.c
++++ b/src/wl/sys/wl_linux.c
+@@ -1463 +1463 @@
+-	strncpy(dev->name, intf_name, IFNAMSIZ-1);
++	strscpy(dev->name, intf_name, IFNAMSIZ);
+
+@@ -1681 +1681 @@
+-	strncpy(info->version, EPI_VERSION_STR, sizeof(info->version));
++	strscpy(info->version, EPI_VERSION_STR, sizeof(info->version));
+
+@@ -2506 +2506 @@
+-		from_timer(t, tl, timer);
++		timer_container_of(t, tl, timer);
+
+@@ -2611 +2611 @@
+-		if (!del_timer(&t->timer)) {
++		if (!timer_delete(&t->timer)) {
+
+@@ -3170 +3170 @@
+-	strncpy(wlif->dev->name, wlif->name, strlen(wlif->name));
++	memcpy(wlif->dev->name, wlif->name, strlen(wlif->name));
+--- a/src/include/linuxver.h
++++ b/src/include/linuxver.h
+@@ -104 +104 @@
+-		strncpy(current->comm, a, MIN(sizeof(current->comm), (strlen(a)))); \
++		strscpy(current->comm, a, sizeof(current->comm)); \
