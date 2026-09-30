@@ -1,0 +1,58 @@
+--- a/src/wl/sys/wl_linux.c
++++ b/src/wl/sys/wl_linux.c
+@@ -1463,7 +1463,7 @@
+ 	bzero(dev, sizeof(struct net_device));
+ 	ether_setup(dev);
+ 
+-	strncpy(dev->name, intf_name, IFNAMSIZ-1);
++	strscpy(dev->name, intf_name, IFNAMSIZ);
+ 	dev->name[IFNAMSIZ-1] = '\0';
+ 
+ 	priv_link = MALLOC(wl->osh, sizeof(priv_link_t));
+@@ -1681,7 +1681,7 @@
+ #endif
+ 	bzero(info, sizeof(struct ethtool_drvinfo));
+ 	snprintf(info->driver, sizeof(info->driver), "wl%d", wl->pub->unit);
+-	strncpy(info->version, EPI_VERSION_STR, sizeof(info->version));
++	strscpy(info->version, EPI_VERSION_STR, sizeof(info->version));
+ 	info->version[(sizeof(info->version))-1] = '\0';
+ }
+ 
+@@ -2506,7 +2506,7 @@
+ ) {
+ 	wl_timer_t *t =
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)
+-		from_timer(t, tl, timer);
++		timer_container_of(t, tl, timer);
+ #else
+ 		(wl_timer_t *)data;
+ #endif
+@@ -2611,7 +2611,7 @@
+ 	ASSERT(t);
+ 	if (t->set) {
+ 		t->set = FALSE;
+-		if (!del_timer(&t->timer)) {
++		if (!timer_delete(&t->timer)) {
+ #ifdef BCMDBG
+ 			WL_INFORM(("wl%d: Failed to delete timer %s\n", wl->unit, t->name));
+ #endif
+@@ -3170,7 +3170,7 @@
+ 	}
+ 
+ 	ASSERT(strlen(wlif->name) > 0);
+-	strncpy(wlif->dev->name, wlif->name, strlen(wlif->name));
++	memcpy(wlif->dev->name, wlif->name, strlen(wlif->name));
+ 
+ 	wl->monitor_dev = dev;
+ 	if (wl->monitor_type == 1)
+--- a/src/include/linuxver.h
++++ b/src/include/linuxver.h
+@@ -104,7 +104,7 @@
+ 	cpu_raise_softirq(smp_processor_id(), NET_RX_SOFTIRQ)
+ #define DAEMONIZE(a) daemonize(); \
+ 	do { if (a) \
+-		strncpy(current->comm, a, MIN(sizeof(current->comm), (strlen(a)))); \
++		strscpy(current->comm, a, sizeof(current->comm)); \
+ 	} while (0);
+ #endif 
+ 
