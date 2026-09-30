@@ -104,7 +104,7 @@
 	cpu_raise_softirq(smp_processor_id(), NET_RX_SOFTIRQ)
 #define DAEMONIZE(a) daemonize(); \
 	do { if (a) \
-		strncpy(current->comm, a, MIN(sizeof(current->comm), (strlen(a)))); \
+		strscpy(current->comm, a, MIN(sizeof(current->comm), (strlen(a)))); \
 	} while (0);
 #endif 
 
