@@ -1463,7 +1463,8 @@ wl_alloc_linux_if(wl_if_t *wlif)
 	bzero(dev, sizeof(struct net_device));
 	ether_setup(dev);
 
-	strncpy(dev->name, intf_name, IFNAMSIZ-1);
+	strscpy(dev->name, intf_name, IFNAMSIZ);
+
 	dev->name[IFNAMSIZ-1] = '\0';
 
 	priv_link = MALLOC(wl->osh, sizeof(priv_link_t));
